@@ -2,27 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>POSTS</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="wrapper">
-    <a href="index.html">
-      <img src="assets/images/lain.png" alt="Lain" class="lain-img" />
-    </a>
-
+    <img src="assets/images/lain.png" alt="Lain" class="lain-img" />
     <div class="content">
-      <h1>The actual posts</h1>
-      <form id="post-form">
-        <textarea id="post-text" placeholder="type something..." required></textarea>
-        <button type="submit">Post</button>
-      </form>
-
-      <div id="posts-container"></div>
+      <h1>The Actual Posts</h1>
+      <textarea id="message" placeholder="say something..."></textarea>
+      <button id="post">post</button>
+      <div id="posts"></div>
     </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
