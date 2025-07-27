@@ -1,27 +1,48 @@
-const textarea = document.getElementById('message');
-const postBtn = document.getElementById('post');
+import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+const db = getDatabase();
+
+const postsRef = ref(db, 'posts'); 
+
 const postsDiv = document.getElementById('posts');
+const form = document.getElementById('postForm');
+const nameInput = document.getElementById('name');
+const messageInput = document.getElementById('message');
 
+function addPostElement({name, message}) {
+  const postEl = document.createElement('div');
+  postEl.classList.add('post');
+  postEl.innerHTML = `<strong>${escapeHtml(name)}</strong>: ${escapeHtml(message)}`;
+  postsDiv.appendChild(postEl);
+  postsDiv.scrollTop = postsDiv.scrollHeight; 
+}
 
-const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
-savedPosts.forEach(addPost);
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, (m) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[m]);
+}
 
-
-postBtn.addEventListener('click', () => {
-  const text = textarea.value.trim();
-  if (text !== '') {
-    const post = { content: text };
-    savedPosts.push(post);
-    localStorage.setItem('posts', JSON.stringify(savedPosts));
-    addPost(post);
-    textarea.value = '';
-  }
+onChildAdded(postsRef, (snapshot) => {
+  const post = snapshot.val();
+  addPostElement(post);
 });
 
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-function addPost(post) {
-  const div = document.createElement('div');
-  div.className = 'post';
-  div.textContent = post.content;
-  postsDiv.prepend(div);
-}
+  const name = nameInput.value.trim();
+  const message = messageInput.value.trim();
+
+  if (!name || !message) return; 
+
+  push(postsRef, { name, message })
+    .then(() => {
+      messageInput.value = '';
+    })
+    .catch(console.error);
+});
