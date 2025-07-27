@@ -20,9 +20,21 @@
       <button type="submit">Send</button>
     </form>
   </div>
-  
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBh61lx7syF5_ZKxK5JJ0zdFcPzwS9TOIg",
+    authDomain: "kdaui-posts.firebaseapp.com",
+    databaseURL: "https://kdaui-posts-default-rtdb.firebaseio.com",
+    projectId: "kdaui-posts",
+    storageBucket: "kdaui-posts.firebasestorage.app",
+    messagingSenderId: "360404207450",
+    appId: "1:360404207450:web:a3a44a6c4a10db1b2d1563"
+  };
+
+  const app = initializeApp(firebaseConfig);
+</script>
 </body>
 </html>
