@@ -4,18 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>POSTS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="wrapper">
     <img src="assets/images/lain.png" alt="Lain" class="lain-img" />
-    <div class="content">
-      <h1>The Actual Posts</h1>
-      <textarea id="message" placeholder="say something..."></textarea>
-      <button id="post">post</button>
-      <div id="posts"></div>
-    </div>
+    <h1>The Actual Posts</h1>
+    
+    <div id="posts" class="posts"></div>
+    
+    <form id="postForm">
+      <input type="text" id="name" placeholder="Your name" required />
+      <textarea id="message" placeholder="Your message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
   </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
