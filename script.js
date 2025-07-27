@@ -1,48 +1,32 @@
 import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
-const db = getDatabase();
+const app = getApp();
+const db = getDatabase(app);
+const postsRef = ref(db, "posts");
 
-const postsRef = ref(db, 'posts'); 
+document.getElementById("postForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  
+  const name = document.getElementById("name").value.trim();
+  const message = document.getElementById("message").value.trim();
 
-const postsDiv = document.getElementById('posts');
-const form = document.getElementById('postForm');
-const nameInput = document.getElementById('name');
-const messageInput = document.getElementById('message');
+  if (name && message) {
+    push(postsRef, {
+      name: name,
+      message: message,
+      timestamp: Date.now()
+    });
 
-function addPostElement({name, message}) {
-  const postEl = document.createElement('div');
-  postEl.classList.add('post');
-  postEl.innerHTML = `<strong>${escapeHtml(name)}</strong>: ${escapeHtml(message)}`;
-  postsDiv.appendChild(postEl);
-  postsDiv.scrollTop = postsDiv.scrollHeight; 
-}
-
-function escapeHtml(text) {
-  return text.replace(/[&<>"']/g, (m) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[m]);
-}
-
-onChildAdded(postsRef, (snapshot) => {
-  const post = snapshot.val();
-  addPostElement(post);
+    document.getElementById("name").value = "";
+    document.getElementById("message").value = "";
+  }
 });
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const name = nameInput.value.trim();
-  const message = messageInput.value.trim();
-
-  if (!name || !message) return; 
-
-  push(postsRef, { name, message })
-    .then(() => {
-      messageInput.value = '';
-    })
-    .catch(console.error);
+onChildAdded(postsRef, (snapshot) => {
+  const data = snapshot.val();
+  const postEl = document.createElement("div");
+  postEl.classList.add("post");
+  postEl.innerHTML = `<strong>${data.name}</strong>: ${data.message}`;
+  document.getElementById("posts").appendChild(postEl);
 });
