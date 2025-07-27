@@ -2,58 +2,74 @@ body {
   margin: 0;
   background: #000;
   color: #ccc;
-  font-family: 'VT323', monospace;
+  font-family: 'VT323', 'Share Tech Mono', monospace;
   display: flex;
   justify-content: center;
   padding: 2rem 1rem;
   min-height: 100vh;
+  text-align: center;
 }
 
 .wrapper {
   max-width: 600px;
   width: 100%;
-  text-align: center;
 }
 
 .lain-img {
-  width: 150px;
+  width: 200px;
+  height: auto;
+  image-rendering: pixelated;
+  filter: grayscale(1) contrast(1.3);
   opacity: 0.5;
-  margin-bottom: 2rem;
-}
-
-textarea {
-  width: 100%;
-  height: 80px;
-  background: #111;
-  color: #ccc;
-  border: 1px solid #444;
-  font-family: inherit;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  resize: vertical;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  background: #222;
-  border: 1px solid #555;
-  color: #ccc;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-button:hover {
-  background: #333;
+  margin: 2rem auto;
+  display: block;
 }
 
 #posts {
-  margin-top: 2rem;
+  background: rgba(30, 30, 30, 0.9);
+  padding: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #444;
   text-align: left;
 }
 
 .post {
-  background: #111;
-  border: 1px solid #333;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px dotted #555;
+  padding-bottom: 0.5rem;
+}
+
+.post strong {
+  color: #f0f;
+}
+
+#postForm input, #postForm textarea {
+  width: 100%;
   padding: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  background: #111;
+  border: 1px solid #444;
+  color: #ccc;
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+#postForm button {
+  width: 100%;
+  padding: 0.7rem;
+  background: #f0f;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#postForm button:hover {
+  background: #c0a0c0;
 }
