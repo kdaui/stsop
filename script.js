@@ -1,32 +1,54 @@
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
-import { getApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
-const app = getApp();
+const firebaseConfig = {
+  apiKey: "AIzaSyBh61lx7syF5_ZKxK5JJ0zdFcPzwS9TOIg",
+  authDomain: "kdaui-posts.firebaseapp.com",
+  databaseURL: "https://kdaui-posts-default-rtdb.firebaseio.com",
+  projectId: "kdaui-posts",
+  storageBucket: "kdaui-posts.appspot.com",
+  messagingSenderId: "360404207450",
+  appId: "1:360404207450:web:a3a44a6c4a10db1b2d1563"
+};
+
+const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const postsRef = ref(db, "posts");
+const postsRef = ref(db, 'posts');
 
-document.getElementById("postForm").addEventListener("submit", (e) => {
+const postForm = document.getElementById('postForm');
+const nameInput = document.getElementById('name');
+const messageInput = document.getElementById('message');
+const postsContainer = document.getElementById('posts');
+
+postForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
-  const name = document.getElementById("name").value.trim();
-  const message = document.getElementById("message").value.trim();
+
+  const name = nameInput.value.trim();
+  const message = messageInput.value.trim();
 
   if (name && message) {
     push(postsRef, {
-      name: name,
-      message: message,
+      name,
+      message,
       timestamp: Date.now()
     });
 
-    document.getElementById("name").value = "";
-    document.getElementById("message").value = "";
+    nameInput.value = '';
+    messageInput.value = '';
   }
 });
 
-onChildAdded(postsRef, (snapshot) => {
+onValue(postsRef, (snapshot) => {
+  postsContainer.innerHTML = '';
   const data = snapshot.val();
-  const postEl = document.createElement("div");
-  postEl.classList.add("post");
-  postEl.innerHTML = `<strong>${data.name}</strong>: ${data.message}`;
-  document.getElementById("posts").appendChild(postEl);
+
+  if (data) {
+    const entries = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
+    entries.forEach(entry => {
+      const post = document.createElement('div');
+      post.className = 'post';
+      post.innerHTML = `<strong>${entry.name}:</strong> ${entry.message}`;
+      postsContainer.appendChild(post);
+    });
+  }
 });
