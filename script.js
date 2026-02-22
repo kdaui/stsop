@@ -65,8 +65,6 @@ onChildAdded(postsRef, (snapshot) => {
     const postElement = createPostElement(data.name, data.message);
     postsContainer.appendChild(postElement);
     
-    // Auto-scroll to the bottom of the terminal
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
   }
 });
 
