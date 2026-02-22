@@ -64,7 +64,8 @@ onChildAdded(postsRef, (snapshot) => {
   if (data) {
     const postElement = createPostElement(data.name, data.message);
     postsContainer.appendChild(postElement);
-    
+
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
   }
 });
 
