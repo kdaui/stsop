@@ -1,5 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded, limitToLast, query } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBh61lx7syF5_ZKxK5JJ0zdFcPzwS9TOIg",
@@ -13,42 +13,66 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const postsRef = ref(db, 'posts');
+const postsRef = query(ref(db, 'posts'), limitToLast(50));
 
 const postForm = document.getElementById('postForm');
 const nameInput = document.getElementById('name');
 const messageInput = document.getElementById('message');
 const postsContainer = document.getElementById('posts');
+const terminalOutput = document.querySelector('.terminal-output');
+
+function createPostElement(name, message) {
+  const post = document.createElement('div');
+  post.className = 'post';
+
+  const header = document.createElement('div');
+  header.className = 'post-header';
+  
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'post-name';
+  nameSpan.textContent = name;
+
+  header.appendChild(nameSpan);
+  
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'post-message';
+  msgDiv.textContent = message;
+
+  post.appendChild(header);
+  post.appendChild(msgDiv);
+  
+  return post;
+}
 
 postForm.addEventListener('submit', (e) => {
   e.preventDefault();
-
   const name = nameInput.value.trim();
   const message = messageInput.value.trim();
 
   if (name && message) {
-    push(postsRef, {
+    push(ref(db, 'posts'), {
       name,
       message,
       timestamp: Date.now()
     });
-
-    nameInput.value = '';
     messageInput.value = '';
   }
 });
 
-onValue(postsRef, (snapshot) => {
-  postsContainer.innerHTML = '';
+onChildAdded(postsRef, (snapshot) => {
   const data = snapshot.val();
-
   if (data) {
-    const entries = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
-    entries.forEach(entry => {
-      const post = document.createElement('div');
-      post.className = 'post';
-      post.innerHTML = `<strong>${entry.name}:</strong> ${entry.message}`;
-      postsContainer.appendChild(post);
-    });
+    const postElement = createPostElement(data.name, data.message);
+    postsContainer.appendChild(postElement);
+    
+    // Auto-scroll to the bottom of the terminal
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  }
+});
+
+messageInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    postForm.dispatchEvent(new Event('submit'));
   }
 });
