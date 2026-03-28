@@ -1,0 +1,19 @@
+name: Quality Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run link checker
+        uses: lycheeverse/lychee-action@v1.10.0
+        with:
+          args: --verbose --no-progress './**/*.html'
+          fail: true
