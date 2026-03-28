@@ -46,25 +46,11 @@ body {
     z-index: 10;
 }
 .terminal-footer {
-    position: relative;
+    text-align: center;
     border-bottom: none;
     border-top: 1px solid var(--border-color);
     font-size: 0.8rem;
     color: var(--text-secondary);
-}
-
-.terminal-footer .footer-center {
-    text-align: center;
-    padding-right: 120px;
-}
-
-.terminal-footer .last-updated-date {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    opacity: 0.6;
 }
 
 .terminal-buttons { display: flex; gap: 8px; }
