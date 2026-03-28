@@ -46,17 +46,22 @@ body {
     z-index: 10;
 }
 .terminal-footer {
+    position: relative;
     border-bottom: none;
     border-top: 1px solid var(--border-color);
     font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
-.terminal-footer .footer-left {
-    text-align: left;
+.terminal-footer .footer-center {
+    text-align: center;
 }
 
 .terminal-footer .last-updated-date {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 0.7rem;
     opacity: 0.6;
 }
