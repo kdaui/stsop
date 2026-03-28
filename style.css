@@ -55,6 +55,7 @@ body {
 
 .terminal-footer .footer-center {
     text-align: center;
+    padding-right: 120px;
 }
 
 .terminal-footer .last-updated-date {
