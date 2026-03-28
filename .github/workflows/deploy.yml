@@ -1,6 +1,9 @@
 name: Deploy to Nekoweb
 
 on:
+  workflow_run:
+    workflows: ["Quality Checks & Sitemap"]
+    types: [completed]
   push:
     branches:
       - main
@@ -8,6 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' }}
     
     steps:
       - name: Checkout repository
